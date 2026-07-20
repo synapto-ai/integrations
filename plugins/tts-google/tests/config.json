@@ -1,0 +1,11 @@
+{
+  "plugins": {
+    "synapto_plugin_tts_google": {
+      "TtsGooglePlugin": {
+        "language_code": "FIXME",
+        "voice_name": "FIXME",
+        "voice_gender": "FIXME"
+      }
+    }
+  }
+}
