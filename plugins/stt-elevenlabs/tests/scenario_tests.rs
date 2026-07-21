@@ -17,7 +17,6 @@ async fn test_bundle() {
         MockChatPlugin,
         MockSlowReadPlugin,
         MockTtsPlugin,
-        MockSttPlugin,
         MockDiarizationPlugin,
         SttElevenLabsPlugin,
     )>()

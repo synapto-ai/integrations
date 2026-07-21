@@ -1,24 +1,30 @@
-
 use synapto::Synapto;
-use synapto::config::{DotEnv, Env};
 use synapto::config::ConfigJson;
-use synapto_test::test_datadir::{ScenarioTestDir, WorkspaceTestDir};
-use synapto_test::local_storage::LocalStorage;
+use synapto::config::{DotEnv, Env};
+use synapto_plugin_stt_speechmatics::SttSpeechmaticsPlugin;
 use synapto_test::ephemeral_datadir::EphemeralDir;
+use synapto_test::local_storage::LocalStorage;
+use synapto_test::test_datadir::{ScenarioTestDir, WorkspaceTestDir};
 use synapto_test::{
     MockAudioInputPlugin, MockChatPlugin, MockDiarizationPlugin, MockDocumentsPlugin,
-    MockSlowReadPlugin, MockSttPlugin, MockTtsPlugin, run_scenario,
+    MockSlowReadPlugin, MockTtsPlugin, run_scenario,
 };
-use synapto_plugin_stt_speechmatics::SttSpeechmaticsPlugin;
 
 async fn test_bundle() {
-    Synapto::<(ConfigJson<ScenarioTestDir>, ConfigJson<WorkspaceTestDir>, DotEnv, Env), LocalStorage<EphemeralDir>>::run::<(
+    Synapto::<
+        (
+            ConfigJson<ScenarioTestDir>,
+            ConfigJson<WorkspaceTestDir>,
+            DotEnv,
+            Env,
+        ),
+        LocalStorage<EphemeralDir>,
+    >::run::<(
         MockAudioInputPlugin,
         MockDocumentsPlugin,
         MockChatPlugin,
         MockSlowReadPlugin,
         MockTtsPlugin,
-        MockSttPlugin,
         MockDiarizationPlugin,
         SttSpeechmaticsPlugin,
     )>()
