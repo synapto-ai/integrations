@@ -1,6 +1,5 @@
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeMap;
-use std::path::Path;
 use synapto::prompt_provider::{CognitivePromptProvider, CognitiveTarget};
 
 #[derive(Serialize, Deserialize, Clone, Debug, Default)]

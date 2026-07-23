@@ -50,7 +50,7 @@ fn capture_merger(
     }
 }
 
-pub fn run_capture_task(
+pub(crate) fn run_capture_task(
     config: HostAudioConfig,
     tx: mpsc::Sender<PeerInputAudio>,
     quit_tx_handle: Arc<Mutex<Option<pw::channel::Sender<Terminate>>>>,

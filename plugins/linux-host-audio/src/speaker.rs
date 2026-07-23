@@ -1,6 +1,4 @@
 use crate::{HostAudioConfig, Terminate, audio_utils};
-use synapto_interface::cognitive_output_audio::CognitiveOutputAudio;
-use synapto_interface::sync::mpsc;
 use libspa_sys as spa_sys;
 use pipewire as pw;
 use pw::properties::properties;
@@ -9,8 +7,10 @@ use pw::spa::pod::Pod;
 use std::collections::VecDeque;
 use std::rc::Rc;
 use std::sync::{Arc, Mutex};
+use synapto_interface::cognitive_output_audio::CognitiveOutputAudio;
+use synapto_interface::sync::mpsc;
 
-pub fn run_playback_task(
+pub(crate) fn run_playback_task(
     config: HostAudioConfig,
     mut rx: mpsc::Receiver<CognitiveOutputAudio>,
     quit_tx_handle: Arc<Mutex<Option<pw::channel::Sender<Terminate>>>>,
@@ -35,7 +35,9 @@ pub fn run_playback_task(
     let mainloop_clone = mainloop.clone();
 
     let (quit_tx, quit_rx) = pw::channel::channel();
-    *quit_tx_handle.lock().unwrap_or_else(|e| panic!("Failed to lock: {:?}", e)) = Some(quit_tx);
+    *quit_tx_handle
+        .lock()
+        .unwrap_or_else(|e| panic!("Failed to lock: {:?}", e)) = Some(quit_tx);
 
     let _quit_receiver = quit_rx.attach(mainloop.loop_(), move |_| {
         mainloop_clone.quit();
@@ -45,7 +47,10 @@ pub fn run_playback_task(
     let audio_buffer_clone = audio_buffer.clone();
 
     let _audio_receiver = audio_rx.attach(mainloop.loop_(), move |samples| {
-        audio_buffer_clone.lock().unwrap_or_else(|e| panic!("Failed to lock: {:?}", e)).extend(samples);
+        audio_buffer_clone
+            .lock()
+            .unwrap_or_else(|e| panic!("Failed to lock: {:?}", e))
+            .extend(samples);
     });
 
     let context = pw::context::ContextBox::new(mainloop.loop_(), None)?;
@@ -83,7 +88,9 @@ pub fn run_playback_task(
                 let data = &mut datas[0];
                 let size = if let Some(slice) = data.data() {
                     let n_frames = slice.len() / size_of::<f32>();
-                    let mut buffer_locked = audio_buffer.lock().unwrap_or_else(|e| panic!("Failed to lock: {:?}", e));
+                    let mut buffer_locked = audio_buffer
+                        .lock()
+                        .unwrap_or_else(|e| panic!("Failed to lock: {:?}", e));
                     for i in 0..n_frames {
                         let sound = buffer_locked.pop_front().unwrap_or(0.0);
                         let start = i * size_of::<f32>();
@@ -227,8 +234,7 @@ pub fn play(
     .unwrap_or_else(|e| panic!("Error: {:?}", e))
     .0
     .into_inner();
- #[allow(clippy::expect_used)]
-
+    #[allow(clippy::expect_used)]
     let mut params = [Pod::from_bytes(&values).expect("Missing value")];
 
     stream.connect(
