@@ -6420,6 +6420,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "synapto-plugin-mcp"
+version = "0.1.0-dev.1"
+dependencies = [
+ "async-trait",
+ "reqwest 0.13.4",
+ "schemars 1.2.1",
+ "serde",
+ "serde_json",
+ "synapto",
+ "synapto-interface",
+ "synapto-test",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
 name = "synapto-plugin-mumble"
 version = "0.1.0-dev.1"
 dependencies = [

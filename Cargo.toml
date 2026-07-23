@@ -20,7 +20,7 @@ serde = { version = "1", default-features = false, features = [
     "alloc",
 ] }
 serde_json = { version = "1", default-features = false, features = ["alloc"] }
-tokio = { version = "1", features = ["macros", "signal", "rt", "rt-multi-thread", "net", "time"] }
+tokio = { version = "1", features = ["macros", "signal", "rt", "rt-multi-thread", "net", "time", "process", "io-util"] }
 better_tokio_select = "0.2.0"
 bytes = "1"
 derive_more= {version = "2", features=["full"]}
