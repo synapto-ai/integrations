@@ -21,15 +21,11 @@ impl<P: synapto_interface::data_dir::DataDirProvider> CognitivePromptProvider
         let prompt_path = P::get_data_dir().join("PROMPT.md");
 
         let mut prompt_content = std::fs::read_to_string(&prompt_path).unwrap_or_else(|e| {
-            if e.kind() == std::io::ErrorKind::NotFound {
-                "You are a helpful AI assistant.".to_string()
-            } else {
-                panic!(
-                    "Failed to read cognitive prompt from {}: {}",
-                    prompt_path.display(),
-                    e
-                );
-            }
+            panic!(
+                "Failed to read cognitive prompt from {}: {}",
+                prompt_path.display(),
+                e
+            );
         });
 
         for (key, value) in &prompt_config.values {
